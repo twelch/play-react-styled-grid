@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components'
 import { Normalize } from 'styled-normalize'
 import { BaseStyle } from './BaseStyle'
+import mapboxgl from 'mapbox-gl'
 import logo from './logo.svg';
+import 'mapbox-gl/dist/mapbox-gl.css'
 
 const Container = styled.div`
   display: grid;
@@ -54,9 +56,26 @@ const NavigationMenu = styled.div`
 
 const MainContent = styled.div`
   grid-column: span 11;
+  height: calc(100vh - 2rem);
+`
+
+const Map = styled.div`
+  height: 100%;
+  width: 100%;
 `
 
 class App extends Component {
+  componentDidMount () {
+    mapboxgl.accessToken = 'pk.eyJ1IjoibGFjdW5hLW1hcGJveCIsImEiOiJjanBva3A0cjEwZXdkNDJydW91Ym82aGpyIn0.Qh-ak-vPBz7EL3ngRdNRZQ'
+
+    this.map = new mapboxgl.Map({
+      container: 'map', // container id
+      style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
+      center: [-74.50, 40], // starting position [lng, lat]
+      zoom: 9 // starting zoom
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -74,7 +93,7 @@ class App extends Component {
             Menu
           </NavigationMenu>
           <MainContent>
-            Content
+            <Map id='map'></Map>
           </MainContent>
         </Container>        
       </React.Fragment>      
