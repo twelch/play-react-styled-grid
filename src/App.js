@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes } from 'styled-components/macro'
 import { Normalize } from 'styled-normalize'
 import { BaseStyle } from './BaseStyle'
 import mapboxgl from 'mapbox-gl'
