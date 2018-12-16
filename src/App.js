@@ -6,15 +6,16 @@ import mapboxgl from 'mapbox-gl'
 import logo from './logo.svg';
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-const Container = styled.div`
+const OneColLayout = styled.div`
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template:
+    [row1-start] "header" 2rem [row1-end]
+    [row2-start] "content" auto [row2-end]
+    / auto;
 `
 
 const Header = styled.div`
-  grid-column: span 12;
-  height: 2rem;
-  display: flex;  
+  display: flex;
 `
 
 const Logo = styled.div`
@@ -36,16 +37,36 @@ const AppLogo = styled.img`
 
 const Search = styled.div`
   flex-grow: 1;
+  display: flex;
+  align-items: center;
   background-color: #eee;
+`
+
+const SearchBar = styled.div`
+  flex-grow: 1;
+  padding: 3px;
+  background-color: white;
 `
 
 const Profile = styled.div`
   width: 200px;
+  display: flex;
+  align-items: center;
   background-color: #ddd;
 `
 
+const ProfileBar = styled.div`
+  flex-grow: 1;
+  padding: 3px;
+  background-color: #bbb;
+`
+
+const Content = styled.div`
+  display: flex;
+`
+
 const NavigationMenu = styled.div`
-  grid-column: span 1;
+  width: 80px;
   height: calc(100vh - 2rem);
   background-color: #ccc;
   &:hover {
@@ -55,7 +76,7 @@ const NavigationMenu = styled.div`
 `
 
 const MainContent = styled.div`
-  grid-column: span 11;
+  width: 100%;
   height: calc(100vh - 2rem);
 `
 
@@ -65,7 +86,7 @@ const Map = styled.div`
 `
 
 class App extends Component {
-  componentDidMount () {
+  componentDidMount() {
     mapboxgl.accessToken = 'pk.eyJ1IjoibGFjdW5hLW1hcGJveCIsImEiOiJjanBva3A0cjEwZXdkNDJydW91Ym82aGpyIn0.Qh-ak-vPBz7EL3ngRdNRZQ'
 
     this.map = new mapboxgl.Map({
@@ -81,22 +102,32 @@ class App extends Component {
       <React.Fragment>
         <Normalize />
         <BaseStyle />
-        <Container>
+        <OneColLayout>
           <Header>
             <Logo>
               <AppLogo src={logo} alt="logo" />
             </Logo>
-            <Search>Search</Search>
-            <Profile>Profile</Profile>
+            <Search>
+              <SearchBar>
+                Search
+              </SearchBar>
+            </Search>
+            <Profile>
+              <ProfileBar>
+                Profile
+              </ProfileBar>
+            </Profile>
           </Header>
-          <NavigationMenu>
-            Menu
-          </NavigationMenu>
-          <MainContent>
-            <Map id='map'></Map>
-          </MainContent>
-        </Container>        
-      </React.Fragment>      
+          <Content>
+            <NavigationMenu>
+              Menu
+            </NavigationMenu>
+            <MainContent>
+              <Map id='map'></Map>
+            </MainContent>
+          </Content>
+        </OneColLayout>
+      </React.Fragment>
     );
   }
 }
