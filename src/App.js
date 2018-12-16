@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
-import styled, { keyframes } from 'styled-components/macro'
+import styled, { keyframes, ThemeProvider } from 'styled-components/macro'
 import { Normalize } from 'styled-normalize'
 import { BaseStyle } from './BaseStyle'
 import mapboxgl from 'mapbox-gl'
 import logo from './logo.svg';
 import 'mapbox-gl/dist/mapbox-gl.css'
 
+export const theme = {
+  primary: '#6e27c5'
+}
+
+const headerHeight = '2.5rem'
+const sidebarWidth = '160px'
+
 const OneColLayout = styled.div`
   display: grid;
   grid-template:
-    [row1-start] "header" 2rem [row1-end]
+    [row1-start] "header" ${headerHeight} [row1-end]
     [row2-start] "content" auto [row2-end]
     / auto;
 `
 
 const Header = styled.div`
   display: flex;
+  border-bottom: 1px solid #efefef;
 `
 
 const Logo = styled.div`
+  display: flex;
+  align-items: center;
   background-color: black;
-  width: 50px;
+  width: ${sidebarWidth};
+  color: white;
 `
 const rotate360 = keyframes`
   from {
@@ -66,8 +77,8 @@ const Content = styled.div`
 `
 
 const NavigationMenu = styled.div`
-  width: 80px;
-  height: calc(100vh - 2rem);
+  width: ${sidebarWidth};
+  height: calc(100vh - ${headerHeight});
   background-color: #ccc;
   &:hover {
     grid-column: span 2;
@@ -76,13 +87,13 @@ const NavigationMenu = styled.div`
 `
 
 const MainContent = styled.div`
-  width: 100%;
-  height: calc(100vh - 2rem);
+  width: calc(100vw - ${sidebarWidth});
+  height: calc(100vh - ${headerHeight});
 `
 
 const Map = styled.div`
   height: 100%;
-  width: 100%;
+  flex-grow: 1;
 `
 
 class App extends Component {
@@ -99,35 +110,38 @@ class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Normalize />
-        <BaseStyle />
-        <OneColLayout>
-          <Header>
-            <Logo>
-              <AppLogo src={logo} alt="logo" />
-            </Logo>
-            <Search>
-              <SearchBar>
-                Search
-              </SearchBar>
-            </Search>
-            <Profile>
-              <ProfileBar>
-                Profile
-              </ProfileBar>
-            </Profile>
-          </Header>
-          <Content>
-            <NavigationMenu>
-              Menu
-            </NavigationMenu>
-            <MainContent>
-              <Map id='map'></Map>
-            </MainContent>
-          </Content>
-        </OneColLayout>
-      </React.Fragment>
+      <ThemeProvider theme={theme}>
+        <React.Fragment>
+          <Normalize />
+          <BaseStyle />
+          <OneColLayout>
+            <Header>
+              <Logo>
+                <AppLogo src={logo} alt="logo" />
+                My App
+              </Logo>
+              <Search>
+                <SearchBar>
+                  Search
+                </SearchBar>
+              </Search>
+              <Profile>
+                <ProfileBar>
+                  Profile
+                </ProfileBar>
+              </Profile>
+            </Header>
+            <Content>
+              <NavigationMenu>
+                Menu
+              </NavigationMenu>
+              <MainContent>
+                <Map id='map'></Map>
+              </MainContent>
+            </Content>
+          </OneColLayout>
+        </React.Fragment>
+      </ThemeProvider>
     );
   }
 }
