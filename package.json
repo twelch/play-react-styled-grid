@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.7.0",
+    "@material-ui/icons": "^3.0.1",
     "husky": "^1.2.1",
     "lint-staged": "^8.1.0",
     "mapbox-gl": "^0.52.0-beta.2",

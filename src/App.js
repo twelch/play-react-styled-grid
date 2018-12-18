@@ -2,17 +2,30 @@ import React, { Component } from 'react';
 import styled, { keyframes, ThemeProvider } from 'styled-components/macro';
 import { Normalize } from 'styled-normalize';
 import { BaseStyle } from './BaseStyle';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import PinDropIcon from '@material-ui/icons/PinDrop';
+import BarChartIcon from '@material-ui/icons/BarChart';
+
 import mapboxgl from 'mapbox-gl';
 import logo from './logo.svg';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-export const theme = {
-  primary: '#6e27c5'
-};
+const muiTheme = createMuiTheme({
+  palette: {
+    type: 'dark' // Switching the dark mode on is a single property value change.
+  },
+  typography: { useNextVariants: true }
+});
 
 const headerHeight = '2.5rem';
-const sidebarWidth = '160px';
+const sidebarWidth = '180px';
 
 const OneColLayout = styled.div`
   display: grid;
@@ -80,7 +93,7 @@ const Content = styled.div`
 const NavigationMenu = styled.div`
   width: ${sidebarWidth};
   height: calc(100vh - ${headerHeight});
-  background-color: #ccc;
+  background-color: ${props => props.theme.palette.background.default};
   &:hover {
     grid-column: span 2;
     transition: 0.5s;
@@ -127,42 +140,52 @@ const InfoView = props => {
 class App extends Component {
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <React.Fragment>
-          <Normalize />
-          <BaseStyle />
-          <Router>
-            <OneColLayout>
-              <Header>
-                <Logo>
-                  <AppLogo src={logo} alt="logo" />
-                  My App
-                </Logo>
-                <Search>
-                  <SearchBar>Search</SearchBar>
-                </Search>
-                <Profile>
-                  <ProfileBar>Profile</ProfileBar>
-                </Profile>
-              </Header>
-              <Content>
-                <NavigationMenu>
-                  <Link to="/map">
-                    <button>Map</button>
-                  </Link>
-                  <Link to="/info">
-                    <button>Info</button>
-                  </Link>
-                </NavigationMenu>
-                <MainContent>
-                  <Route exact path="/map" component={MapView} />
-                  <Route exact path="/info" component={InfoView} />
-                </MainContent>
-              </Content>
-            </OneColLayout>
-          </Router>
-        </React.Fragment>
-      </ThemeProvider>
+      <MuiThemeProvider theme={muiTheme}>
+        <ThemeProvider theme={muiTheme}>
+          <React.Fragment>
+            <Normalize />
+            <BaseStyle />
+            <Router>
+              <OneColLayout>
+                <Header>
+                  <Logo>
+                    <AppLogo src={logo} alt="logo" />
+                    My App
+                  </Logo>
+                  <Search>
+                    <SearchBar>Search</SearchBar>
+                  </Search>
+                  <Profile>
+                    <ProfileBar>Profile</ProfileBar>
+                  </Profile>
+                </Header>
+                <Content>
+                  <NavigationMenu>
+                    <List>
+                      <ListItem button key={'map'} component={Link} to="/map">
+                        <ListItemIcon>
+                          <PinDropIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Map View'} />
+                      </ListItem>
+                      <ListItem button key={'info'} component={Link} to="/info">
+                        <ListItemIcon>
+                          <BarChartIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Reports'} />
+                      </ListItem>
+                    </List>
+                  </NavigationMenu>
+                  <MainContent>
+                    <Route exact path="/map" component={MapView} />
+                    <Route exact path="/info" component={InfoView} />
+                  </MainContent>
+                </Content>
+              </OneColLayout>
+            </Router>
+          </React.Fragment>
+        </ThemeProvider>
+      </MuiThemeProvider>
     );
   }
 }
